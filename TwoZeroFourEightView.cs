@@ -28,6 +28,9 @@ namespace twozerofoureight
         public void Notify(Model m)
         {
             UpdateBoard(((TwoZeroFourEightModel) m).GetBoard());
+            UpdateScore(((TwoZeroFourEightModel)m).GetScore());
+            UpdateGameOver(((TwoZeroFourEightModel)m).GetBoard());
+
         }
 
         private void UpdateTile(Label l, int i)
@@ -56,6 +59,52 @@ namespace twozerofoureight
                     l.BackColor = Color.Green;
                     break;
             }
+        }
+        private void UpdateScore(int result)
+        {
+            UpdateTile(Score, result);
+        }
+        private void UpdateGameOver(int[,] Board)
+        {
+            bool a = true, b = true;
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if (Board[i, j] == 0)
+                    {
+                        a = true;
+                        break;
+                    }
+                    else a = false;
+                }
+                if (a)
+                {
+                    label2.Text = " ";
+                    break;
+                }
+                else if (i == 3)
+                {
+                    for (int k = 0; k < 3; k++)
+                    {
+                        for (int q = 0; q < 3; q++)
+                        {
+                            if (Board[k, q] == Board[k, q + 1] || Board[k, q] == Board[k + 1, q])
+                            {
+                                b = true;
+                                break;
+                            }
+                            else b = false;
+                        }
+                        if (Board[k, 3] == Board[k + 1, 3]) b = true;
+                        if (b) break;
+                    }
+                    if (b) label2.Text = "Full";
+                    else label2.Text = "Game Over";
+                }
+            }
+
+
         }
         private void UpdateBoard(int[,] board)
         {
@@ -97,5 +146,33 @@ namespace twozerofoureight
             controller.ActionPerformed(TwoZeroFourEightController.DOWN);
         }
 
+        private void Score_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Aup(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyValue)
+            { 
+            case 37:
+                controller.ActionPerformed(TwoZeroFourEightController.LEFT);
+                break;
+            case 38:
+                controller.ActionPerformed(TwoZeroFourEightController.UP);
+                break;
+            case 39:
+                controller.ActionPerformed(TwoZeroFourEightController.RIGHT);
+                break;
+            case 40:
+                controller.ActionPerformed(TwoZeroFourEightController.DOWN);
+                break;
+            }
+        }
     }
 }
